@@ -483,9 +483,22 @@ print("""
                                 }
                             }
                         </script>
-                        
-                        <div class="text-center">
-                            <input type="submit" class="btn btn-primary" name="sub" value="Submit">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="mb-3 d-grid gap-2">
+                                    <input type="submit" class="btn btn-primary" name="sub" value="Submit">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <p>Already Registered? <a href="tutors_login.py">Login here</a></p>
+                                
+                            </div>
+                            <div class="col-md-6 text-end">
+                                <p><a href="index.html">Home</a></p>
+                                
+                            </div>
                         </div>
                     </form>
                 </div>
