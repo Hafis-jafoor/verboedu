@@ -582,60 +582,56 @@ confirmPassword = f.getvalue("confirmPassword")
 sub = f.getvalue("sub")
 
 if sub != None:
-    cur.execute("""insert into tutors_registeration(full_name,email,gender,other_gender,
-        watsapp_no,contact_no,qualification_currently_persuing,spoken_language,online_exp,
-        offline_exp,available_offline,kg,1_4,5_7,8_10,11_12,btech,ug,pg,arts_craft,drawing,music,
-        dance,abacus,ielts,coding,foreign_language,country,state,district,taluk,password,
-        dob,other_spoken_language)values('%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s'
-        ,'%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s',
-        '%s','%s','%s','%s','%s','%s')
-                       """ % (name, email, gender, otherGender, whatsapp, contact, qualification, selectedLanguages,
-                              on_teaching_experience, off_teaching_experience, offline_teaching_experience,
-                              kg, one_four, five_seven, eight_ten, eleven_twelve, btech, ug, pg, art_and_craft,
-                              drawing, music, dance, abacus, ielts, coding, foreign_language, country, state,
-                              district, taluk, confirmPassword, dob, otherLanguages))
-    conn.commit()
-    print("""
-            <script>
-                alert("successfully");
-            </script>
-            """)
+    cur.execute("""select * from tutors_registeration where email = '%s' or contact_no = '%s' """
+                % (email, contact))
+    f = cur.fetchone()
+    if f is None:
+        cur.execute("""insert into tutors_registeration(full_name,email,gender,other_gender,
+            watsapp_no,contact_no,qualification_currently_persuing,spoken_language,online_exp,
+            offline_exp,available_offline,kg,1_4,5_7,8_10,11_12,btech,ug,pg,arts_craft,drawing,music,
+            dance,abacus,ielts,coding,foreign_language,country,state,district,taluk,password,
+            dob,other_spoken_language)values('%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s'
+            ,'%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s',
+            '%s','%s','%s','%s','%s','%s')
+                           """ % (name, email, gender, otherGender, whatsapp, contact, qualification, selectedLanguages,
+                                  on_teaching_experience, off_teaching_experience, offline_teaching_experience,
+                                  kg, one_four, five_seven, eight_ten, eleven_twelve, btech, ug, pg, art_and_craft,
+                                  drawing, music, dance, abacus, ielts, coding, foreign_language, country, state,
+                                  district, taluk, confirmPassword, dob, otherLanguages))
+        conn.commit()
+        import smtplib
+        from email.message import EmailMessage
 
-# cur.execute("""select * from tutors_registeration where email = '%s' and contact_no = '%s' """
-#             % (email, contact))
-# f = cur.fetchone()
-# if f != None:
+        fromaccount = "sticknobillshafis@gmail.com"
+        password = "voyp trhk rhox oekl"
+        toaccount = email
+        msg = EmailMessage()
+        msg.set_content('This is your username:%s , password :%s' % (email, confirmPassword))
+
+        msg['Subject'] = 'save your Username & password for future references'
+        msg['From'] = "sticknobillshafis@gmail.com"
+        msg['To'] = email
+
+        # This is your  password reset otp :%s"""%(otp)
+        server = smtplib.SMTP('smtp.gmail.com:587')
+        server.ehlo()
+        server.starttls()
+        server.login(fromaccount, password)
+        server.send_message(msg)
+        server.quit()
+        print("""
+                <script>
+                    alert("login username and the password sent to email and successfully registered");
+                </script>
+                """)
+    else:
+        print("""
+                <script>
+                    alert("already exists either email or phone number");
+                </script>
+                """)
 
 
-# if sub != None:
-#     # Check if user already exists
-#     cur.execute("SELECT * FROM tutors_registeration WHERE email = %s OR contact_no = %s", (email, contact))
-#     if cur.fetchone() is None:
-#         # Insert new user
-#         cur.execute("""INSERT INTO tutors_registeration (full_name, email, gender, other_gender, watsapp_no,
-#                        contact_no, qualification_currently_persuing, spoken_language, online_exp, offline_exp,
-#                        available_offline, kg, 1_4, 5_7, 8_10, 11_12, btech, ug, pg, arts_craft, drawing, music,
-#                        dance, abacus, ielts, coding, foreign_language, country, state, district, taluk, password,
-#                        dob, other_spoken_language)
-#                        VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s,
-#                        %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)""",
-#                     (name, email, gender, otherGender, whatsapp, contact, qualification, selectedLanguages,
-#                      on_teaching_experience, off_teaching_experience, offline_teaching_experience, kg, one_four,
-#                      five_seven, eight_ten, eleven_twelve, btech, ug, pg, art_and_craft, drawing, music, dance,
-#                      abacus, ielts, coding, foreign_language, country, state, district, taluk, confirmPassword, dob,
-#                      otherLanguages))
-#         conn.commit()
-#         print("""
-#             <script>
-#                 alert("Inserted successfully");
-#             </script>
-#         """)
-#     else:
-#         print("""
-#             <script>
-#                 alert("User with this email or contact number already exists");
-#             </script>
-#         """)
-#
-# cur.close()
-# conn.close()
+
+
+
