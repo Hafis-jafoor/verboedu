@@ -635,6 +635,7 @@ if sub != None:
         print("""
                 <script>
                     alert("login username and the password sent to email and successfully registered");
+                    location.href = "tutors_login.py"
                 </script>
                 """)
     else:

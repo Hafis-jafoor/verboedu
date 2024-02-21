@@ -5,13 +5,10 @@ import pymysql
 import cgi
 
 a = cgi.FieldStorage()
-otp = a.getvalue("otp")
-ids = a.getvalue("sno")
+id1 = a.getvalue("sno")
 
 conn = pymysql.connect(host="localhost", user="root", password="", database="verbo")
 cur = conn.cursor()
-print(otp)
-print(ids)
 
 print("""
 <!DOCTYPE html>
@@ -64,12 +61,12 @@ print("""
         <div class="container py-5">
             <div class="row justify-content-center">
                 <div class="col-lg-10 text-center">
-                    <h1 class="display-3 text-white animated slideInDown">Otp</h1>
+                    <h1 class="display-3 text-white animated slideInDown">Tutors Password Reset</h1>
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb justify-content-center">
                             <li class="breadcrumb-item"><a class="text-white" href="#">Home</a></li>
                             <!-- <li class="breadcrumb-item"><a class="text-white" href="#">Pages</a></li> -->
-                            <li class="breadcrumb-item text-white active" aria-current="page">Otp</li>
+                            <li class="breadcrumb-item text-white active" aria-current="page">Password Reset</li>
                         </ol>
                     </nav>
                 </div>
@@ -78,15 +75,22 @@ print("""
     </div>
     <!-- Header End -->
 
-    <!-- OTP Form Start -->
+
+    <!-- Form Section Start -->
 <div class="container py-5">
     <div class="row justify-content-center">
         <div class="col-lg-6">
-            <h2 class="text-center mb-4">Enter OTP</h2>
-            <form action="#" method="post" role="form" id="otpForm">
+            <form method = "post">
                 <div class="mb-3">
-                    <label for="otp" class="form-label">OTP</label>
-                    <input type="text" class="form-control" id="otp" name="otp" placeholder="Enter OTP" required>
+                    <label for="password" class="form-label">Password</label>
+                    <input type="password" class="form-control" id="password" name="password" placeholder="Enter your password" oninput="validatePassword()" required>
+                    <small id="passwordValidationText" style="color: red; display: none;">Password must contain at least one uppercase letter, one lowercase letter, one digit, one special character, and be at least 8 characters long</small>
+                </div>
+
+                <div class="mb-3">
+                    <label for="confirmPassword" class="form-label">Confirm Password</label>
+                    <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" placeholder="Confirm your password" oninput="validatePassword()" required>
+                    <small id="confirmPasswordValidationText" style="color: red; display: none;">Passwords do not match</small>
                 </div>
                 <div class="row">
                     <div class="col-md-12">
@@ -95,11 +99,35 @@ print("""
                         </div>
                     </div>
                 </div>
+                <script>
+                            function validatePassword() {
+                                var password = document.getElementById("password").value;
+                                var confirmPassword = document.getElementById("confirmPassword").value;
+                                var passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\da-zA-Z]).{8,}$/;
+
+                                var passwordValidationText = document.getElementById("passwordValidationText");
+                                var confirmPasswordValidationText = document.getElementById("confirmPasswordValidationText");
+
+                                if (!passwordRegex.test(password)) {
+                                    passwordValidationText.style.display = "inline";
+                                } else {
+                                    passwordValidationText.style.display = "none";
+                                }
+
+                                if (password !== confirmPassword) {
+                                    confirmPasswordValidationText.style.display = "inline";
+                                } else {
+                                    confirmPasswordValidationText.style.display = "none";
+                                }
+                            }
+                        </script>
             </form>
         </div>
     </div>
 </div>
-<!-- OTP Form End -->
+<!-- Form Section End -->
+
+
 
 
 
@@ -115,22 +143,24 @@ print("""
     <script src="js/main.js"></script>
 </body>
 
-</html>
-""")
+</html>""")
 
-fotp = a.getvalue("otp")
+password = a.getvalue("password")
+confirm_password = a.getvalue("confirmPassword")
 sub = a.getvalue("sub")
-if sub != None:
-    if fotp == otp:
+if sub is not None:
+    if password == confirm_password:
+        cur.execute("""update tutors_registeration set password = '%s' where slno = '%s'""" % (password, id1))
+        conn.commit()
         print("""
             <script>
-               alert("otp correct");
-               location.href = "tutors_reset_password.py?sno=%s"
+               alert("password changed");
+               location.href = "tutors_login.py"
             </script>
-            """ % (ids))
+            """)
     else:
         print("""
             <script>
-               alert("otp incorrect");
+               alert("password not match");
             </script>
             """)
