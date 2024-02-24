@@ -149,8 +149,9 @@ if sub != None:
         print("""
                <script>
                    alert("Login successfully");
+                   location.href = "tutors_dashboard.py?sno=%s"
                </script>
-               """)
+               """ % f[0])
     else:
         print("""
                <script>
