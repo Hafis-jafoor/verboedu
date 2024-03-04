@@ -103,7 +103,7 @@ print("""
                             <label for="syllabus" class="form-label">Select Syllabus:</label>
                             <select class="form-select" id="syllabus" name="syllabus" required>
                                 <option value="" selected disabled>Select Syllabus</option>
-                                <option value="CBSE">CBSE</option>
+                                <option value="demo_question">CBSE</option>
                                 <option value="ICSE">ICSE</option>
                                 <option value="State Board">State Board</option>
                                 <!-- Add more options as needed -->
@@ -143,12 +143,7 @@ if sub is not None:
         print("""
                <script>
                    alert("exam starts - all the very best");
-                   location.href = "demo_1.py?sno=%s&class=%s&subject=%s&syallabus=%s"
+                   location.href = "demo_1.py?sno=%s&class=%s&subject=%s&syllabus=%s"
                </script>
-               """ % ( id1, classes, subject, syllabus))
-else:
-    print("""
-           <script>
-               alert("enter subject");
-           </script>
-           """)
+               """ % (id1, classes, subject, syllabus))
+
