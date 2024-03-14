@@ -6,7 +6,7 @@
 
 print("content-type:text/html\r\n\r\n")
 import cgi
-from common import connect_db, fetch_random_question, render_header, render_footer, render_question_and_options, update_tutor_score, fetch_tutor_score
+from common import connect_db, render_header, render_footer, fetch_tutor_score
 
 form = cgi.FieldStorage()
 tutor_id = form.getvalue("sno")
@@ -24,7 +24,7 @@ connection.close()
 # Render the HTML content
 print(render_header())
 print(f"""
-    <h1>Question Page 10</h1>
+    <h1>final page</h1>
     <p>Final Score: {final_score}</p>
 """)
 print(render_footer())

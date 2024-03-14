@@ -6,7 +6,6 @@ import pymysql
 
 a = cgi.FieldStorage()
 id1 = a.getvalue("sno")
-# print(id1)
 conn = pymysql.connect(host="localhost", user="root", password="", database="verbo")
 cur = conn.cursor()
 
@@ -134,16 +133,13 @@ print("""
 
 """)
 
-classes = a.getvalue("class")
-subject = a.getvalue("subject")
 syllabus = a.getvalue("syllabus")
 sub = a.getvalue("sub")
 
 if sub is not None:
-        print("""
-               <script>
-                   alert("exam starts - all the very best");
-                   location.href = "demo_1.py?sno=%s&class=%s&subject=%s&syllabus=%s"
-               </script>
-               """ % (id1, classes, subject, syllabus))
-
+    print("""
+       <script>
+           alert("exam starts - all the very best");
+           location.href = "demo_1.py?sno=%s&syllabus=%s"
+       </script>
+       """ % (id1, syllabus))
